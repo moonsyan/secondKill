@@ -1,0 +1,53 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Open Sans", sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+<input type="hidden" th:value="${user.getId()}" id="userId"/>
+<input type="hidden" th:value="${goodsId}" id="goodsId"/>
+<input type="hidden" th:value="${orderStatus}" id="orderStatus"/>
+<h1>秒杀情况说明 ： </h1>
+<p th:text="${errmsg}"></p>
+</body>
+<script>
+    $(function () {
+        countDown();
+    });
+
+    function countDown() {
+        var userId = $("#userId").val();
+        var goodsId = $("#goodsId").val();
+        var orderStatus = $("#orderStatus").val();
+        var timeout;
+        console.log("userId:" + userId + "goodsId:" + goodsId + "orderStatus:" + orderStatus)
+        if (orderStatus == 0) {
+            timeout = setTimeout(function () {
+                $.ajax({
+                    url: "/seckill/getResult",
+                    type: "POST",
+                    data: {
+                        userId,
+                        goodsId
+                    },
+                });
+                countDown();
+            }, 500);
+        } else {
+            if (timeout) {//清空计时器
+                clearTimeout(timeout);
+            }
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,89 @@
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: computer99...
+
+    # 数据库连接池
+    hikari:
+      pool-name: Hsp_Hikari_Poll
+      #最小空闲连接
+      minimum-idle: 5
+      #空闲连接存活最大时间，默认 60000(10 分钟)
+      idle-timeout: 60000
+      # 最大连接数，默认是 10
+      maximum-pool-size: 10
+      #从连接池返回来的连接自动提交
+      auto-commit: true
+      #连接最大存活时间。0 表示永久存活，默认 180000（30 分钟）
+      max-lifetime: 180000
+      #连接超时时间，默认 30000（30 秒）
+      connection-timeout: 30000
+      #测试连接是否可用的查询语句
+      connection-test-query: select 1
+  redis:
+    host: 192.168.200.130
+    port: 6379
+    database: 0
+    connect-timeout: 20000ms
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 8
+        #最大阻塞等待时间
+        max-wait: 10000ms
+        # 最大空闲连接
+        max-idle: 200
+        # 最小空闲连接
+        min-idle: 5
+
+
+  rabbitmq:
+    # 配置rabbitmq 所在的主机ip
+    host: 192.168.200.130
+    username: guest
+    password: guest
+    #虚拟主机
+    virtual-host: /
+    # java操作 rabbitmq 的端口
+    port: 5672
+    listener:
+      simple:
+        # 消费者的最小数量
+        concurrency: 10
+        # 消费者的最大数量
+        max-concurrency: 10
+        # 限制消费者，每次只能处理一条消息，处理完才能继续下一条消息
+        prefetch: 1
+        #启动时，是否默认启动容器/rabbitmq，默认trUe
+        auto-startup: true
+        #被拒绝后，重新进入队列
+        default-requeue-rejected: true
+    template:
+      retry:
+        # 启用重试机制，默认False
+        enabled: true
+        # 设置 第一次 重试 的时间间隔
+        initial-interval: 1000ms
+        # 重试 的 最大次数，默认是  3
+        max-attempts: 3
+        # 设置 最大重试 的时间间隔
+        max-interval: 10
+        # 重试时间间隔的乘数
+        # 比如配置是 2 ：第1次重试等待 1s,第2次重试等待 2s,第？次重试等待 4s
+        multiplier: 1
+
+
+
+#mybatis-plus 配置
+mybatis-plus:
+  #配置 mapper.xml 映射文件
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  #配置 mybatis 数据返回类型别名
+  type-aliases-package: com.hspedu.secondkill.pojo
+#logging:
+#  level:
+#    com.hspedu.secondkill.mapper: debug
